@@ -12,8 +12,8 @@ function App() {
                 <Router>
                     <div className="container">
                         <Switch>
-                            <Route exact path='/' component={LoginByGoogle}></Route>
-                            <Route path='/Dashboard' component={Dashboard} ></Route>
+                            <Route exact path='/' component={LoginByGoogle}/>
+                            <Route path='/Dashboard' component={Dashboard}/>
                         </Switch>
                     </div>
                 </Router>
