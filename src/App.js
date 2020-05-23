@@ -1,9 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import LoginByGoogle from './components/LoginByGoogle'
-import Dashboard from './components/Dashboard'
 import Lobby from "./components/Lobby";
 
 function App() {
