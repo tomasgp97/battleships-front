@@ -22,9 +22,8 @@ export class LoginByGoogle extends Component {
         axios.post('http://localhost:5000/register', googleresponse)
             .then((result) => {
                 console.log(result)
-                let responseJson = result;
-                sessionStorage.setItem("userData", JSON.stringify(result));
-                this.props.history.push('/Dashboard')
+                sessionStorage.setItem("userData", JSON.stringify(googleresponse));
+                this.props.history.push('/lobby')
             });
     };
 
@@ -38,25 +37,14 @@ export class LoginByGoogle extends Component {
 
         return (
             <div className="App">
-                <div className="row">
-                    <div className="col-sm-12 btn btn-info">
-                        Login With Google Using ReactJS
-                    </div>
-                </div>
-                <div className="row">
-                    <div style={{'paddingTop': "20px"}} className="col-sm-12">
-                        <div className="col-sm-4"/>
-                        <div className="col-sm-4">
-                            <GoogleLogin
-                                clientId="277387142817-veuud45dkct39ivh7qmjq2v8muf3ju85.apps.googleusercontent.com"
-                                buttonText="Login with Google"
-                                cookiePolicy={'single_host_origin'}
-                                onSuccess={(e) => responseGoogle(e)}
-                                onAutoLoadFinished={() => console.log("Auto load Finished")}
-                                onFailure={(e) => console.log(e)}/>
-                        </div>
-                        <div className="col-sm-4"/>
-                    </div>
+                <div style={{'paddingTop': "20px"}} className="col-sm-12">
+                    <GoogleLogin
+                        clientId="277387142817-veuud45dkct39ivh7qmjq2v8muf3ju85.apps.googleusercontent.com"
+                        buttonText="Login with Google"
+                        cookiePolicy={'single_host_origin'}
+                        onSuccess={(e) => responseGoogle(e)}
+                        onAutoLoadFinished={() => console.log("Auto load Finished")}
+                        onFailure={(e) => console.log(e)}/>
                 </div>
             </div>
         )

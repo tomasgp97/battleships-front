@@ -4,6 +4,7 @@ import './App.css';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import LoginByGoogle from './components/LoginByGoogle'
 import Dashboard from './components/Dashboard'
+import Lobby from "./components/Lobby";
 
 function App() {
     return (
@@ -13,7 +14,7 @@ function App() {
                     <div className="container">
                         <Switch>
                             <Route exact path='/' component={LoginByGoogle}/>
-                            <Route path='/Dashboard' component={Dashboard}/>
+                            <Route path='/lobby' component={Lobby}/>
                         </Switch>
                     </div>
                 </Router>
