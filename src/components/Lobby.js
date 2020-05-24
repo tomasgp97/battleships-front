@@ -16,31 +16,34 @@ export default class Lobby extends Component {
         this.googleId = userData["googleId"]
         this.socket = socketIOClient(ENDPOINT);
         this.state = {
-            users: [],
             gameReady: false,
-            opponent: null
+            opponents: []
         };
+        setInterval(() => {
+            this.socket.emit('inform_state', {
+                id: this.googleId,
+                gameReady: this.state.gameReady
+            })
+        }, 1000);
     }
 
     componentDidMount() {
-        // this.socket.on("state", () => {
-        //     this.socket.emit('inform_state', {
-        //         id: this.googleId,
-        //         gameReady: this.gameReady
-        //     })
-        // });
+        this.socket.on("set_opponent", data => {
+            this.setState({gameReady: false})
+            if (data["opponent"].id !== this.googleId) {
+                this.setState({opponents: [data["opponent"]]})
+            }
+        });
     }
 
     getOpponent() {
         this.setState({gameReady: true})
-        // this.socket.emit("get_opponent", data => {
-        //     this.opponent = data["opponent"]
-        // })
+        this.socket.emit("get_opponent")
     }
 
 
     getListedUsers() {
-        const listItems = this.state.users.map((user) =>
+        const listItems = this.state.opponents.map((user) =>
             <tr>
                 <td>{user.name}</td>
             </tr>
@@ -60,10 +63,12 @@ export default class Lobby extends Component {
                 <div className="row">
                     <div className="col-sm-3"> Welcome: {this.name} </div>
                 </div>
-                <Button variant="primary" disabled={this.state.gameReady} onClick={this.getOpponent.bind(this)}>Find
-                    oppponent</Button>
-                <Button variant="secondary" disabled={!this.state.gameReady}
-                        onClick={this.cancel.bind(this)}>Cancel</Button>
+                <Button variant="primary" disabled={this.state.gameReady} onClick={this.getOpponent.bind(this)}>
+                    Find opponent
+                </Button>
+                <Button variant="secondary" disabled={!this.state.gameReady} onClick={this.cancel.bind(this)}>
+                    Cancel
+                </Button>
                 <Table striped bordered hover>
                     <thead>
                     <tr>
