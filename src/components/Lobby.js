@@ -33,6 +33,7 @@ export default class Lobby extends Component {
             if (data["opponent"].id !== this.googleId) {
                 console.log(data["opponent"])
                 sessionStorage.setItem("opponent", JSON.stringify(data["opponent"]));
+                sessionStorage.setItem("room", JSON.stringify(data["room"]))
                 this.props.history.push('/room')
             }
         });
@@ -40,7 +41,7 @@ export default class Lobby extends Component {
 
     gameReady() {
         this.setState({gameReady: true})
-        this.socket.emit("get_opponent", {
+        this.socket.emit("game_ready", {
             id: this.googleId
         })
     }
