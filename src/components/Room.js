@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import socketIOClient from "socket.io-client";
+import GameBoard from "./GameBoard";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 
@@ -33,6 +34,7 @@ export default class Room extends Component {
                 <h2>
                     Last Message: {this.state.lastMessage}
                 </h2>
+                <GameBoard/>
             </div>
         )
     }
