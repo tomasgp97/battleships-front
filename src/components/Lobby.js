@@ -3,6 +3,7 @@ import socketIOClient from "socket.io-client";
 import Table from 'react-bootstrap/Table';
 import {Button, Navbar} from "react-bootstrap";
 import {NavBar} from "./NavBar";
+import {Redirect} from "react-router-dom";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 
@@ -19,26 +20,29 @@ export default class Lobby extends Component {
             gameReady: false,
             opponents: []
         };
-        setInterval(() => {
-            this.socket.emit('inform_state', {
-                id: this.googleId,
-                gameReady: this.state.gameReady
-            })
-        }, 1000);
+        // setInterval(() => {
+        //     this.socket.emit('inform_state', {
+        //         id: this.googleId,
+        //         gameReady: this.state.gameReady
+        //     })
+        // }, 1000);
     }
 
     componentDidMount() {
         this.socket.on("set_opponent", data => {
-            this.setState({gameReady: false})
             if (data["opponent"].id !== this.googleId) {
-                this.setState({opponents: [data["opponent"]]})
+                console.log(data["opponent"])
+                sessionStorage.setItem("opponent", JSON.stringify(data["opponent"]));
+                this.props.history.push('/room')
             }
         });
     }
 
-    getOpponent() {
+    gameReady() {
         this.setState({gameReady: true})
-        this.socket.emit("get_opponent")
+        this.socket.emit("get_opponent", {
+            id: this.googleId
+        })
     }
 
 
@@ -63,22 +67,22 @@ export default class Lobby extends Component {
                 <div className="row">
                     <div className="col-sm-3"> Welcome: {this.name} </div>
                 </div>
-                <Button variant="primary" disabled={this.state.gameReady} onClick={this.getOpponent.bind(this)}>
+                <Button variant="primary" disabled={this.state.gameReady} onClick={this.gameReady.bind(this)}>
                     Find opponent
                 </Button>
                 <Button variant="secondary" disabled={!this.state.gameReady} onClick={this.cancel.bind(this)}>
                     Cancel
                 </Button>
-                <Table striped bordered hover>
-                    <thead>
-                    <tr>
-                        <th>UserName</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {this.getListedUsers()}
-                    </tbody>
-                </Table>
+                {/*<Table striped bordered hover>*/}
+                {/*    <thead>*/}
+                {/*    <tr>*/}
+                {/*        <th>UserName</th>*/}
+                {/*    </tr>*/}
+                {/*    </thead>*/}
+                {/*    <tbody>*/}
+                {/*    {this.getListedUsers()}*/}
+                {/*    </tbody>*/}
+                {/*</Table>*/}
             </div>
         )
     }
