@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from "react-bootstrap";
+import Draggable from 'react-draggable';
 
 export default class GameBoard extends React.Component {
 
@@ -9,7 +9,7 @@ export default class GameBoard extends React.Component {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 4, 4, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -25,22 +25,16 @@ export default class GameBoard extends React.Component {
 
 
     renderSquare(row, col) {
-
-
         switch (this.state.board[row][col]) {
             case 0:
                 return (
                     <div className="empty"/>
                 );
-            case 4:
+            case 1:
                 return (<div className="ship"/>)
             case 2:
-                return (
-                    <div className="empty"/>
-                );
-            case 3:
                 return <div className="hit"/>;
-            case 1:
+            case 3:
                 return <div className="miss"/>;
         }
     }
@@ -53,13 +47,21 @@ export default class GameBoard extends React.Component {
                 let square = this.renderSquare(row, col);
                 thisRow.push(square);
             }
-            rows.push(<div className="game-row">{thisRow}</div>);
+            rows.push(
+                <div className="game-row">{thisRow}</div>
+            );
         }
 
         return (
             <div>
                 <div className={''}>
                     {rows}
+                    <Draggable grid={[50, 50]}>
+                        <div className={"game-row"}>
+                            <div className="ship"/>
+                            <div className="ship"/>
+                        </div>
+                    </Draggable>
                 </div>
             </div>
         );

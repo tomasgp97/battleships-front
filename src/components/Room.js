@@ -26,14 +26,14 @@ export default class Room extends Component {
         return (
             <div>
                 <h1>
-                    This is the Room {this.state.room}
+                    This is the room: {this.state.room}
                 </h1>
                 <h2>
-                    This is your opponent => NAME: {this.state.opponent.name} ID: {this.state.opponent.id}
+                    This is your opponent
                 </h2>
-                <h2>
-                    Last Message: {this.state.lastMessage}
-                </h2>
+                <h3>
+                    NAME: {this.state.opponent.name}
+                </h3>
                 <GameBoard/>
             </div>
         )
