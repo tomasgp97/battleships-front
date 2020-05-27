@@ -1,6 +1,10 @@
 import React, {Component} from "react";
 import socketIOClient from "socket.io-client";
 import GameBoard from "./GameBoard";
+import Battlefield from "./battleship/components/common/Battlefield";
+import Ship from "./battleship/lib/ship";
+import Cell from "./battleship/lib/cell";
+import SetupPage from "./battleship/components/settings_page";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 
@@ -23,18 +27,25 @@ export default class Room extends Component {
         this.socket.on("room_update", data => {
             this.setState({lastMessage: data["message"]})
         })
+
+        const state = {
+            currentShip: null,
+            ships: Ship.generate(),
+            cells: Cell.generate()
+        };
+
         return (
             <div>
-                <h1>
+                <h3>
                     This is the room: {this.state.room}
-                </h1>
-                <h2>
+                </h3>
+                <h3>
                     This is your opponent
-                </h2>
+                </h3>
                 <h3>
                     NAME: {this.state.opponent.name}
                 </h3>
-                <GameBoard/>
+                <SetupPage/>
             </div>
         )
     }

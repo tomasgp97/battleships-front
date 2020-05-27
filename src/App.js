@@ -2,9 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import LoginByGoogle from './components/LoginByGoogle'
-import Lobby from "./components/Lobby";
-import Room from "./components/Room";
+import LoginByGoogle from './my-components/LoginByGoogle'
+import Lobby from "./my-components/Lobby";
+import Room from "./my-components/Room";
 
 function App() {
     return (
