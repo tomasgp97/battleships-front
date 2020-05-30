@@ -109,6 +109,7 @@ class Ship extends Position implements IShip {
   simplify() {
     return {
       id: this.id,
+      length: this.length,
       orientation: this.orientation,
       x: this.position.x,
       y: this.position.y

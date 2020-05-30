@@ -2,8 +2,12 @@ import React, {Component} from "react";
 import socketIOClient from "socket.io-client";
 import Ship from "./battleship/lib/ship";
 import Cell from "./battleship/lib/cell";
-import SetupPage from "./battleship/components/settings_page";
 import {Button} from "react-bootstrap";
+import {IShip} from "./battleship/types";
+import Header from "../components/common/Header";
+import Battlefield from "../components/common/Battlefield";
+import ShipList from "../components/settings_page/ShipList";
+import DragAndDropCursor from "../components/common/DragAndDropCursor";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 
@@ -25,11 +29,12 @@ export default class Room extends Component {
             boardReady: false,
             currentShip: null,
             ships: Ship.generate(),
-            cells: Cell.generate(),
+            cells: Cell.generate()
         }
     }
 
     componentDidMount() {
+        this.updateCells();
         this.socket.on("user_state_update", data => {
             if (this.state.opponent.id === data["user_id"]) {
                 console.log(data["ready"])
@@ -38,11 +43,74 @@ export default class Room extends Component {
         })
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.currentShip !== null && this.state.currentShip === null) {
+            this.updateCells();
+        } else if (prevState.currentShip !== this.state.currentShip) {
+            this.updateCells();
+        }
+    }
+
+    updateCells() {
+        const {cells, ships} = this.state;
+
+        Cell.resetCells(cells);
+        Cell.updateCells(cells, ships);
+
+        this.setState({cells});
+    }
+
+    handleMouseDown = (shipId) => {
+        const setCurrentShip = () => {
+            const {ships} = this.state;
+
+            for (let i = 0; i < ships.length; ++i) {
+                if (ships[i].id === +shipId) {
+                    ships[i].move(0, 0);
+                    this.setState({ships, currentShip: ships[i]});
+
+                    break;
+                }
+            }
+        };
+
+        setCurrentShip();
+    };
+
+    handleMouseUp = (shipId, cellX, cellY) => {
+        const {ships, cells} = this.state;
+
+        for (let i = 0; i < ships.length; ++i) {
+            if (ships[i].id === shipId) {
+                ships[i].move(cellX, cellY);
+
+                if (Ship.isPositionValid(ships[i], cells)) {
+                    this.setState({ships, currentShip: null});
+                } else {
+                    ships[i].reset();
+                }
+
+                break;
+            }
+        }
+    };
+
+    handleRotateShip = (ship) => {
+        ship.rotate();
+        this.setState({currentShip: ship});
+    };
+
+    get isReadyToPlay() {
+        return this.state.ships.filter((i) => i.isOnBoard()).length === 10;
+    }
+
+
     boardReady() {
         this.setState({boardReady: true})
         this.socket.emit("board_ready", {
             id: this.googleId,
-            room_id: this.state.room
+            room_id: this.state.room,
+            ships: this.state.ships.map((item) => item.simplify())
         })
     }
 
@@ -55,6 +123,10 @@ export default class Room extends Component {
     }
 
     render() {
+        const ships = this.state.ships
+        const cells = this.state.cells
+        const currentShip = this.state.currentShip
+
         return (
             <div>
                 <h3>
@@ -69,8 +141,35 @@ export default class Room extends Component {
                 <h3>
                     PLAYER ID: {this.state.opponent.id}
                 </h3>
-                <SetupPage/>
-                <Button variant="primary" disabled={this.state.boardReady} onClick={this.boardReady.bind(this)}>
+                <div>
+                    <Header as="h3" content="Hi, admiral! Set up your flotilla!"/>
+                    <div className="h-container">
+                        <div className="h-container__col">
+                            <Battlefield cells={cells}/>
+                        </div>
+
+                        <div className="h-container__col">
+                            <ShipList ships={ships}/>
+
+                            <ul className="brief">
+                                <li>
+                                    <b>move</b> - drag and drop
+                                </li>
+                                <li>
+                                    <b>rotate</b> - select and press space
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <DragAndDropCursor
+                        currentShip={currentShip}
+                        onMouseDown={this.handleMouseDown}
+                        onMouseUp={this.handleMouseUp}
+                        onRotateShip={this.handleRotateShip}
+                    />
+                </div>
+                <Button variant="primary" disabled={this.state.boardReady || !this.isReadyToPlay}
+                        onClick={this.boardReady.bind(this)}>
                     Ready!
                 </Button>
                 <Button variant="secondary" disabled={!this.state.boardReady}
