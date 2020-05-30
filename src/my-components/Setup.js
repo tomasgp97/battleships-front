@@ -43,6 +43,7 @@ export default class Setup extends Component {
             }
         })
         this.socket.on("to_game_screen", () => {
+            sessionStorage.setItem("my_ships", JSON.stringify(this.state.ships));
             this.props.history.push('/game')
         })
     }
