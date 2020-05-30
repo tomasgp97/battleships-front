@@ -4,7 +4,9 @@ import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import LoginByGoogle from './my-components/LoginByGoogle'
 import Lobby from "./my-components/Lobby";
-import Room from "./my-components/Room";
+import Setup from "./my-components/Setup";
+import Game from "./my-components/Game";
+
 
 function App() {
     return (
@@ -15,7 +17,8 @@ function App() {
                         <Switch>
                             <Route exact path='/' component={LoginByGoogle}/>
                             <Route path='/lobby' component={Lobby}/>
-                            <Route path='/room' component={Room}/>
+                            <Route path='/setup' component={Setup}/>
+                            <Route path='/game' component={Game}/>
                         </Switch>
                     </div>
                 </Router>

@@ -11,7 +11,7 @@ import DragAndDropCursor from "../components/common/DragAndDropCursor";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 
-export default class Room extends Component {
+export default class Setup extends Component {
     constructor(props) {
         super();
         const userData = JSON.parse(sessionStorage.getItem('userData'));
@@ -29,7 +29,8 @@ export default class Room extends Component {
             boardReady: false,
             currentShip: null,
             ships: Ship.generate(),
-            cells: Cell.generate()
+            cells: Cell.generate(),
+            inSetup: true
         }
     }
 
@@ -40,6 +41,9 @@ export default class Room extends Component {
                 console.log(data["ready"])
                 this.setState({opponentReady: JSON.parse(data["ready"])}, console.log(this.state))
             }
+        })
+        this.socket.on("to_game_screen", () => {
+            this.props.history.push('/game')
         })
     }
 
@@ -114,6 +118,7 @@ export default class Room extends Component {
         })
     }
 
+
     cancelBoardReady() {
         this.setState({boardReady: false})
         this.socket.emit("cancel_board_ready", {
@@ -141,7 +146,7 @@ export default class Room extends Component {
                 <h3>
                     PLAYER ID: {this.state.opponent.id}
                 </h3>
-                <div>
+                <div className={"Setup"}>
                     <Header as="h3" content="Hi, admiral! Set up your flotilla!"/>
                     <div className="h-container">
                         <div className="h-container__col">
@@ -167,19 +172,19 @@ export default class Room extends Component {
                         onMouseUp={this.handleMouseUp}
                         onRotateShip={this.handleRotateShip}
                     />
+                    <Button variant="primary" disabled={this.state.boardReady || !this.isReadyToPlay}
+                            onClick={this.boardReady.bind(this)}>
+                        Ready!
+                    </Button>
+                    <Button variant="secondary" disabled={!this.state.boardReady}
+                            onClick={this.cancelBoardReady.bind(this)}>
+                        Not ready...
+                    </Button>
+                    <h3>
+                        Opponent ready: {this.state.opponentReady ? "Yes" : "No"}
+                    </h3>
+                    {this.state.opponentReady && this.state.boardReady ? <h3>Everyone is ready!</h3> : ""}
                 </div>
-                <Button variant="primary" disabled={this.state.boardReady || !this.isReadyToPlay}
-                        onClick={this.boardReady.bind(this)}>
-                    Ready!
-                </Button>
-                <Button variant="secondary" disabled={!this.state.boardReady}
-                        onClick={this.cancelBoardReady.bind(this)}>
-                    Not ready...
-                </Button>
-                <h3>
-                    Opponent ready: {this.state.opponentReady ? "Yes" : "No"}
-                </h3>
-                {this.state.opponentReady && this.state.boardReady ? <h3>Everyone is ready!</h3> : ""}
             </div>
         )
     }

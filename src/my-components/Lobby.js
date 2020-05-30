@@ -20,12 +20,6 @@ export default class Lobby extends Component {
             gameReady: false,
             opponents: []
         };
-        // setInterval(() => {
-        //     this.socket.emit('inform_state', {
-        //         id: this.googleId,
-        //         gameReady: this.state.gameReady
-        //     })
-        // }, 1000);
     }
 
     componentDidMount() {
@@ -34,7 +28,7 @@ export default class Lobby extends Component {
                 console.log(data["opponent"])
                 sessionStorage.setItem("opponent", JSON.stringify(data["opponent"]));
                 sessionStorage.setItem("room", JSON.stringify(data["room"]))
-                this.props.history.push('/room')
+                this.props.history.push('/setup')
             }
         });
     }
