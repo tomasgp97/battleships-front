@@ -47,17 +47,11 @@ export default class Lobby extends Component {
     }
 
 
-    getListedUsers() {
-        const listItems = this.state.opponents.map((user) =>
-            <tr>
-                <td>{user.name}</td>
-            </tr>
-        );
-        return listItems
-    }
-
     cancel() {
         this.setState({gameReady: false})
+        this.socket.emit("cancel_game_ready", {
+            id: this.googleId
+        })
     }
 
 
@@ -66,7 +60,7 @@ export default class Lobby extends Component {
             <div className="container">
                 <NavBar/>
                 <div className="row">
-                    <div className="col-sm-3"> Welcome: {this.name} </div>
+                    <div className="col-sm-3"> Welcome {this.name} </div>
                 </div>
                 <Button variant="primary" disabled={this.state.gameReady} onClick={this.gameReady.bind(this)}>
                     Find opponent
@@ -74,16 +68,6 @@ export default class Lobby extends Component {
                 <Button variant="secondary" disabled={!this.state.gameReady} onClick={this.cancel.bind(this)}>
                     Cancel
                 </Button>
-                {/*<Table striped bordered hover>*/}
-                {/*    <thead>*/}
-                {/*    <tr>*/}
-                {/*        <th>UserName</th>*/}
-                {/*    </tr>*/}
-                {/*    </thead>*/}
-                {/*    <tbody>*/}
-                {/*    {this.getListedUsers()}*/}
-                {/*    </tbody>*/}
-                {/*</Table>*/}
             </div>
         )
     }
