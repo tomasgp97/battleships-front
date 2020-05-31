@@ -19,7 +19,7 @@ export default class Setup extends Component {
         const room = JSON.parse(sessionStorage.getItem('room'));
         this.name = userData["name"]
         this.googleId = userData["googleId"]
-        this.socket = socketIOClient(ENDPOINT);
+        this.socket = props.socket
         this.socket.emit("join_room", {room_uuid: room, user_id: userData.googleId})
         this.state = {
             room: room,
@@ -30,7 +30,8 @@ export default class Setup extends Component {
             currentShip: null,
             ships: Ship.generate(),
             cells: Cell.generate(),
-            inSetup: true
+            inSetup: true,
+            myTurn: false
         }
     }
 
@@ -44,8 +45,13 @@ export default class Setup extends Component {
         })
         this.socket.on("to_game_screen", () => {
             sessionStorage.setItem("my_ships", JSON.stringify(this.state.ships));
+            sessionStorage.setItem("my_turn", JSON.stringify(this.state.myTurn));
             this.props.history.push('/game')
         })
+        this.socket.on("assign_turn", () => {
+            console.log("ITS MY TURN")
+            this.setState({myTurn: true})
+        });
     }
 
     componentDidUpdate(prevProps, prevState) {

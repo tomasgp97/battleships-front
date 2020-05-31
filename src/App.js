@@ -6,7 +6,10 @@ import LoginByGoogle from './my-components/LoginByGoogle'
 import Lobby from "./my-components/Lobby";
 import Setup from "./my-components/Setup";
 import Game from "./my-components/Game";
+import socketIOClient from "socket.io-client";
 
+const ENDPOINT = "http://127.0.0.1:5000";
+const socket = socketIOClient(ENDPOINT);
 
 function App() {
     return (
@@ -15,10 +18,10 @@ function App() {
                 <Router>
                     <div className="container">
                         <Switch>
-                            <Route exact path='/' component={LoginByGoogle}/>
-                            <Route path='/lobby' component={Lobby}/>
-                            <Route path='/setup' component={Setup}/>
-                            <Route path='/game' component={Game}/>
+                            <Route exact path='/' render={(props) => <LoginByGoogle {...props} socket={socket} />}/>
+                            <Route path='/lobby' render={(props) => <Lobby {...props} socket={socket} />}/>
+                            <Route path='/setup' render={(props) => <Setup {...props} socket={socket} />}/>
+                            <Route path='/game' render={(props) => <Game  {...props}socket={socket} />}/>
                         </Switch>
                     </div>
                 </Router>

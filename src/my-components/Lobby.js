@@ -15,7 +15,7 @@ export default class Lobby extends Component {
         const userData = JSON.parse(sessionStorage.getItem('userData'));
         this.name = userData["name"]
         this.googleId = userData["googleId"]
-        this.socket = socketIOClient(ENDPOINT);
+        this.socket = props.socket
         this.state = {
             gameReady: false,
             opponents: []
