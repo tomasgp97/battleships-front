@@ -52,30 +52,11 @@ export default class Game extends Component {
         this.setState({myTurn: false})
     }
 
-    // handleOnClick = (x: number, y: number) => {
-    //     const { playerTwoCells, currentPlayer, gameState } = this.state;
-    //
-    //     if (currentPlayer === Players.Two || gameState === GameStates.Over) {
-    //         return;
-    //     }
-    //
-    //     let nextPlayer = Players.Two;
-    //     const cell = playerTwoCells.get(`${x}:${y}`);
-    //
-    //     if (cell.isDamaged() || cell.isOpen()) {
-    //         return;
-    //     }
-    //
-    //     this.strike(cell, this.playerTwoShips, playerTwoCells);
-    //
-    //     if (cell.isDamaged()) {
-    //         nextPlayer = Players.One;
-    //     } else {
-    //         this.counterAttack();
-    //     }
-    //
-    //     this.setState({ playerTwoCells, currentPlayer: nextPlayer });
-    // };
+    handleOnClick = (x, y) => {
+        if(this.state.myTurn){
+            this.socket.emit("fire", {x: x, y: y, user_id: this.googleId, room_id: this.state.room})
+        }
+    };
 
     render() {
         return (
@@ -85,7 +66,6 @@ export default class Game extends Component {
                     <div className="h-container__col">
                         <Battlefield cells={this.state.myCells}/>
                     </div>
-
                     <div className="h-container__col">
                         <Battlefield
                             cells={this.state.opponent_cells}
