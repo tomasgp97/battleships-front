@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { fromEvent } from "rxjs";
 import { createCursor } from "../../lib/cursor";
-import Ship from "../common/Ship";
+import Ship from "./Ship";
 import { IShip, Cursor } from "../../types";
 
 interface IProps {

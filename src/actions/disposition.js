@@ -1,4 +1,4 @@
-import { UPDATE_DISPOSITION_SUCCESS, RESET_DISPOSITION_SUCCESS } from "./";
+import { UPDATE_DISPOSITION_SUCCESS, RESET_DISPOSITION_SUCCESS } from "./index";
 
 function updateDisposition(positions) {
   return { type: UPDATE_DISPOSITION_SUCCESS, positions };

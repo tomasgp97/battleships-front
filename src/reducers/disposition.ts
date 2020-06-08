@@ -1,8 +1,6 @@
-import { Ship } from "../types";
-import {
-  UPDATE_DISPOSITION_SUCCESS,
-  RESET_DISPOSITION_SUCCESS
-} from "../actions";
+import {Ship} from "../components/types";
+import {RESET_DISPOSITION_SUCCESS, UPDATE_DISPOSITION_SUCCESS} from "../components/actions";
+
 
 const initialState: Ship[] = [];
 

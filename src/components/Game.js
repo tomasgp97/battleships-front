@@ -1,13 +1,10 @@
 import socketIOClient from "socket.io-client";
 import React, {Component} from "react";
-import Ship from "./battleship/lib/ship";
-import Cell from "./battleship/lib/cell";
+import Ship from "./lib/ship";
+import Cell from "./lib/cell";
 import {Button} from "react-bootstrap";
-import {IShip} from "./battleship/types";
-import Header from "../components/common/Header";
-import Battlefield from "../components/common/Battlefield";
-import ShipList from "../components/settings_page/ShipList";
-import DragAndDropCursor from "../components/common/DragAndDropCursor";
+import Header from "./components/common/Header";
+import Battlefield from "./components/common/Battlefield";
 
 
 export default class Game extends Component {
@@ -41,6 +38,25 @@ export default class Game extends Component {
     }
 
     componentDidMount() {
+        this.socket.on("shoot_update", (data) => {
+            const user_id = data["user_id"]
+            const x = data["x"]
+            const y = data["y"]
+            const result = data["result"]
+            console.log(x)
+            console.log(y)
+            console.log(result)
+            if (user_id === this.state.opponent.googleId) {
+                const cell = this.state.opponent_cells.get(`${x}:${y}`)
+                cell.state = result
+                this.setState({opponent_cells: this.state.opponent_cells.set(`${x}:${y}`, cell)})
+            }
+            if (user_id === this.state.userData.googleId) {
+                const cell = this.state.myCells.get(`${x}:${y}`)
+                cell.state = result
+                this.setState({myCells: this.state.myCells.set(`${x}:${y}`, cell)})
+            }
+        })
         this.socket.on("your_turn", () => {
             console.log("ITS MY TURN")
             this.setState({myTurn: true})
@@ -53,8 +69,9 @@ export default class Game extends Component {
     }
 
     handleOnClick = (x, y) => {
-        if(this.state.myTurn){
+        if (this.state.myTurn) {
             this.socket.emit("fire", {x: x, y: y, user_id: this.googleId, room_id: this.state.room})
+            this.passTurn()
         }
     };
 

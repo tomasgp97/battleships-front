@@ -1,11 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import LoginByGoogle from './my-components/LoginByGoogle'
-import Lobby from "./my-components/Lobby";
-import Setup from "./my-components/Setup";
-import Game from "./my-components/Game";
+import LoginByGoogle from './components/LoginByGoogle'
+import Lobby from "./components/Lobby";
+import Setup from "./components/Setup";
+import Game from "./components/Game";
 import socketIOClient from "socket.io-client";
 
 const ENDPOINT = "http://127.0.0.1:5000";

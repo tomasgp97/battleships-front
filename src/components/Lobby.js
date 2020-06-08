@@ -1,9 +1,6 @@
-import React, {Component, useState, useEffect} from "react";
-import socketIOClient from "socket.io-client";
-import Table from 'react-bootstrap/Table';
-import {Button, Navbar} from "react-bootstrap";
+import React, {Component} from "react";
+import {Button} from "react-bootstrap";
 import {NavBar} from "./NavBar";
-import {Redirect} from "react-router-dom";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 

@@ -1,13 +1,12 @@
 import React, {Component} from "react";
-import socketIOClient from "socket.io-client";
-import Ship from "./battleship/lib/ship";
-import Cell from "./battleship/lib/cell";
+import Ship from "./lib/ship";
+import Cell from "./lib/cell";
 import {Button} from "react-bootstrap";
-import {IShip} from "./battleship/types";
-import Header from "../components/common/Header";
-import Battlefield from "../components/common/Battlefield";
-import ShipList from "../components/settings_page/ShipList";
-import DragAndDropCursor from "../components/common/DragAndDropCursor";
+import Header from "./components/common/Header";
+import Battlefield from "./components/common/Battlefield";
+import ShipList from "./components/settings_page/ShipList";
+import DragAndDropCursor from "./components/common/DragAndDropCursor";
+
 
 const ENDPOINT = "http://127.0.0.1:5000";
 
@@ -117,11 +116,14 @@ export default class Setup extends Component {
 
 
     boardReady() {
+        console.log(this.state.cells)
+        console.log(JSON.stringify(this.state.cells))
         this.setState({boardReady: true})
         this.socket.emit("board_ready", {
             id: this.googleId,
             room_id: this.state.room,
-            ships: this.state.ships.map((item) => item.simplify())
+            ships: this.state.ships.map((item) => item.simplify()),
+            cells: Object.fromEntries(this.state.cells)
         })
     }
 

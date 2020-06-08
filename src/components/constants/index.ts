@@ -1,4 +1,4 @@
-import { ClassOfShip } from "./../types/enums";
+import { ClassOfShip } from "../types/enums";
 
 export const BATTLEFIELD_SIZE = 10;
 export const TOTAL_SHIPS_COUNT = 10;
