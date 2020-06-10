@@ -46,15 +46,19 @@ export default class Game extends Component {
             console.log(x)
             console.log(y)
             console.log(result)
-            if (user_id === this.state.opponent.googleId) {
-                const cell = this.state.opponent_cells.get(`${x}:${y}`)
-                cell.state = result
-                this.setState({opponent_cells: this.state.opponent_cells.set(`${x}:${y}`, cell)})
+            if (user_id === this.state.opponent.id) {
+                const opponent_cell = this.state.opponent_cells.get(`${x}:${y}`)
+                opponent_cell.state = result
+                this.setState({opponent_cells: this.state.opponent_cells.set(`${x}:${y}`, opponent_cell)})
+                console.log("Something changed for my opponent")
+                console.log(this.state.opponent_cells.get(`${x}:${y}`))
             }
             if (user_id === this.state.userData.googleId) {
                 const cell = this.state.myCells.get(`${x}:${y}`)
                 cell.state = result
                 this.setState({myCells: this.state.myCells.set(`${x}:${y}`, cell)})
+                console.log("Something changed for me")
+                console.log(this.state.myCells.get(`${x}:${y}`))
             }
         })
         this.socket.on("your_turn", () => {
