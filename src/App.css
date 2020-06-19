@@ -1,27 +1,3 @@
-html {
-    height: 100%;
-}
-
-body {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-h1 {
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1.1em;
-    color: lightskyblue;
-}
-
-button {
-    padding: 10px;
-    font-weight: bold;
-    font-size: 18px;
-    letter-spacing: 0.1em;
-}
-
 #root {
     height: 100%;
     flex-grow: 1;
