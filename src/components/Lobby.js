@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Button} from "react-bootstrap";
-import {NavBar} from "./NavBar";
+import NavBar from "./NavBar";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 
