@@ -1,65 +1,65 @@
-import React, {Component} from "react";
-import {Button} from "react-bootstrap";
+import React, {useEffect, useState} from "react";
 import NavBar from "./NavBar";
+import Button from "@material-ui/core/Button";
+import socketIOClient from "socket.io-client";
+import {useHistory} from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 
 const ENDPOINT = "http://127.0.0.1:5000";
+const socket = socketIOClient(ENDPOINT);
 
+export default function Lobby() {
 
-export default class Lobby extends Component {
+    const userData = JSON.parse(sessionStorage.getItem('userData'));
+    const name = userData["name"]
+    const googleId = userData["googleId"]
+    const [gameReady, setGameReady] = useState(false)
 
-    constructor(props, context) {
-        super(props, context);
-        const userData = JSON.parse(sessionStorage.getItem('userData'));
-        this.name = userData["name"]
-        this.googleId = userData["googleId"]
-        this.socket = props.socket
-        this.state = {
-            gameReady: false,
-            opponents: []
-        };
-    }
+    const history = useHistory()
 
-    componentDidMount() {
-        this.socket.on("set_opponent", data => {
+    useEffect(() => {
+        socket.on("set_opponent", data => {
             if (data["opponent"].id !== this.googleId) {
                 console.log(data["opponent"])
                 sessionStorage.setItem("opponent", JSON.stringify(data["opponent"]));
                 sessionStorage.setItem("room", JSON.stringify(data["room"]))
-                this.props.history.push('/setup')
+                history.push('/setup')
             }
         });
-    }
+    })
 
-    gameReady() {
-        this.setState({gameReady: true})
-        this.socket.emit("game_ready", {
-            id: this.googleId
+
+    function gameIsReady() {
+        setGameReady(true)
+        socket.emit("game_ready", {
+            id: googleId
         })
     }
 
 
-    cancel() {
-        this.setState({gameReady: false})
-        this.socket.emit("cancel_game_ready", {
-            id: this.googleId
+    function cancel() {
+        setGameReady(false)
+        socket.emit("cancel_game_ready", {
+            id: googleId
         })
     }
 
 
-    render() {
-        return (
-            <div className="container">
-                <NavBar/>
-                <div className="row">
-                    <div className="col-sm-3"> Welcome {this.name} </div>
-                </div>
-                <Button variant="primary" disabled={this.state.gameReady} onClick={this.gameReady.bind(this)}>
+    return (
+        <div>
+            <NavBar/>
+            <Container component="main" maxWidth="xs">
+                <Typography>
+                    <div> Welcome {name} </div>
+                </Typography>
+                <Button variant="primary" disabled={gameReady} onClick={() => gameIsReady()}>
                     Find opponent
                 </Button>
-                <Button variant="secondary" disabled={!this.state.gameReady} onClick={this.cancel.bind(this)}>
+                <Button variant="secondary" disabled={gameReady} onClick={() => cancel()}>
                     Cancel
                 </Button>
-            </div>
-        )
-    }
+            </Container>
+        </div>
+    )
 }

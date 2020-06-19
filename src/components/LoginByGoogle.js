@@ -21,7 +21,6 @@ export default function LoginByGoogle() {
         };
         axios.post('http://localhost:5000/register', googleresponse)
             .then((result) => {
-                console.log(result)
                 sessionStorage.setItem("userData", JSON.stringify(googleresponse));
                 history.push('/lobby')
             });
@@ -29,8 +28,7 @@ export default function LoginByGoogle() {
 
     function responseGoogle(response) {
         console.log(response);
-        var res = response.profileObj;
-        console.log(res);
+        let res = response.profileObj;
         signup(response);
     }
 
@@ -48,7 +46,6 @@ export default function LoginByGoogle() {
     }));
 
     const styles = useStyles()
-
 
     return (
         <div>
