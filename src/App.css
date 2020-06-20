@@ -29,7 +29,7 @@
 
 .brief {
     font-size: 12px;
-    color: black;
+    color: white;
     text-align: left;
     list-style-type: none;
     padding: 0;
@@ -66,17 +66,17 @@
 .board {
     display: flex;
     flex-flow: row wrap;
-    width: 320px;
-    min-width: 320px;
+    width: 302px;
+    min-width: 302px;
     margin: 0 auto;
-    border: 1px solid black;
-    background: white;
+    border: 1px solid gray;
+    background: grey;
 }
 
 .cell {
     cursor: pointer;
-    color: seagreen;
-    background: white;
+    color: gray;
+    background: #424242;
     border: 1px dotted silver;
     min-width: 30px;
     min-height: 30px;
@@ -85,7 +85,7 @@
 }
 
 .cell--ship {
-    border: 1px solid black;
+    border: 1px solid white;
 }
 
 .cell--damaged {

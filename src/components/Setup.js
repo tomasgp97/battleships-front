@@ -1,11 +1,16 @@
 import React, {Component} from "react";
 import Ship from "./lib/ship";
 import Cell from "./lib/cell";
-import {Button} from "react-bootstrap";
-import Header from "./components/common/Header";
 import Battlefield from "./components/common/Battlefield";
 import ShipList from "./components/settings_page/ShipList";
 import DragAndDropCursor from "./components/common/DragAndDropCursor";
+import Typography from "@material-ui/core/Typography";
+import NavBar from "./NavBar";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
 
 
 const ENDPOINT = "http://127.0.0.1:5000";
@@ -143,25 +148,37 @@ export default class Setup extends Component {
 
         return (
             <div>
-                <h3>
-                    This is the room: {this.state.room}
-                </h3>
-                <h3>
-                    This is your opponent
-                </h3>
-                <h3>
-                    NAME: {this.state.opponent.name}
-                </h3>
-                <h3>
-                    PLAYER ID: {this.state.opponent.id}
-                </h3>
-                <div className={"Setup"}>
-                    <Header as="h3" content="Hi, admiral! Set up your flotilla!"/>
+                <CssBaseline/>
+                <NavBar/>
+                <div>
+                    <Grid container direction="row" justify="space-around">
+                        <Grid item>
+                            <Typography component="h1" variant="h5">
+                                This is the room: {this.state.room}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography component="h3" variant="h5">
+                                This is your opponent
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography component="h3" variant="h5">
+                                NAME: {this.state.opponent.name}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography component="h3" variant="h5">
+                                PLAYER ID: {this.state.opponent.id}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </div>
+                <Container className={"Setup"} style={{margin: "50px"}}>
                     <div className="h-container">
                         <div className="h-container__col">
                             <Battlefield cells={cells}/>
                         </div>
-
                         <div className="h-container__col">
                             <ShipList ships={ships}/>
 
@@ -181,19 +198,33 @@ export default class Setup extends Component {
                         onMouseUp={this.handleMouseUp}
                         onRotateShip={this.handleRotateShip}
                     />
-                    <Button variant="primary" disabled={this.state.boardReady || !this.isReadyToPlay}
-                            onClick={this.boardReady.bind(this)}>
-                        Ready!
-                    </Button>
-                    <Button variant="secondary" disabled={!this.state.boardReady}
-                            onClick={this.cancelBoardReady.bind(this)}>
-                        Not ready...
-                    </Button>
-                    <h3>
-                        Opponent ready: {this.state.opponentReady ? "Yes" : "No"}
-                    </h3>
-                    {this.state.opponentReady && this.state.boardReady ? <h3>Everyone is ready!</h3> : ""}
-                </div>
+                </Container>
+                <Grid container direction={"column"} justify={"space-around"} alignItems={"center"}>
+                    <Grid item>
+                        <Grid container direction={"row"} spacing={3}>
+                            <Grid item xs>
+                                <Button variant="outlined" color={"inherit"}
+                                        disabled={this.state.boardReady || !this.isReadyToPlay}
+                                        onClick={this.boardReady.bind(this)}>
+                                    Ready
+                                </Button>
+                            </Grid>
+                            <Grid item xs>
+                                <Button variant="outlined" color={"inherit"} disabled={!this.state.boardReady}
+                                        onClick={this.cancelBoardReady.bind(this)}>
+                                    Cancel
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                        <Typography component="h3" variant="h5" style={{margin:"10px"}}>
+                            Opponent ready: {this.state.opponentReady ? "Yes" : "No"}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                {this.state.opponentReady && this.state.boardReady ?
+                    <Typography component="h3" variant="h5">Everyone is ready!</Typography> : ""}
             </div>
         )
     }
