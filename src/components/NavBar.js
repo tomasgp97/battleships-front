@@ -7,8 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {AccountCircle} from "@material-ui/icons";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
-export default function NavBar() {
-    const [auth, setAuth] = useState(true);
+export default function NavBar(props) {
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -32,7 +31,7 @@ export default function NavBar() {
                     <Typography variant="h6" className={classes.title}>
                         Star Wars Admirals
                     </Typography>
-                    {auth && (
+                    {props.auth && (
                         <div>
                             <IconButton
                                 aria-label="account of current user"

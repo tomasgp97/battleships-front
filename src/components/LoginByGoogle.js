@@ -10,25 +10,32 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import NavBar from "./NavBar";
 
 export default function LoginByGoogle() {
-
     const history = useHistory()
 
     function signup(res) {
-        const googleresponse = {
-            googleId: res.profileObj.googleId,
-            email: res.profileObj.email,
-            name: res.profileObj.name,
-        };
-        axios.post('http://localhost:5000/register', googleresponse)
-            .then((result) => {
-                sessionStorage.setItem("userData", JSON.stringify(googleresponse));
+        var id_token = res.getAuthResponse().id_token
+        // var xhr = new XMLHttpRequest();
+        // xhr.open('POST', 'http://localhost:5000/register');
+        // xhr.setRequestHeader('Content-Type', 'application/json');
+        // xhr.onload = function(e) {
+        //     debugger
+        //     sessionStorage.setItem("userData", JSON.stringify(e));
+        //     history.push('/lobby')
+        // };
+        // xhr.send(JSON.stringify({id_token: id_token}));
+        axios.post('http://localhost:5000/register', JSON.stringify({id_token: id_token}), {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then((newres) => {
+                debugger
+                sessionStorage.setItem("userData", JSON.stringify(newres.data));
                 history.push('/lobby')
             });
     }
 
     function responseGoogle(response) {
-        console.log(response);
-        let res = response.profileObj;
         signup(response);
     }
 
@@ -49,7 +56,7 @@ export default function LoginByGoogle() {
 
     return (
         <div>
-            <NavBar/>
+            <NavBar auth={false} />
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div className={styles.paper}>
