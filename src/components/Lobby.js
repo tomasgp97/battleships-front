@@ -7,6 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import Box from "@material-ui/core/Box";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@material-ui/core/Grid";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 const socket = socketIOClient(ENDPOINT);
@@ -22,7 +25,7 @@ export default function Lobby() {
 
     useEffect(() => {
         socket.on("set_opponent", data => {
-            if (data["opponent"].id !== this.googleId) {
+            if (data["opponent"].id !== googleId) {
                 console.log(data["opponent"])
                 sessionStorage.setItem("opponent", JSON.stringify(data["opponent"]));
                 sessionStorage.setItem("room", JSON.stringify(data["room"]))
@@ -53,41 +56,45 @@ export default function Lobby() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: "space-around",
+            justifyContent: "center",
         },
         avatar: {
             margin: theme.spacing(3),
         },
         buttons: {
-            '& > *': {
-                margin: theme.spacing(3),
-            },
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
             margin: theme.spacing(3),
         }
     }));
 
     const styles = useStyles()
 
-
     return (
         <div>
             <NavBar/>
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
-                <div className={styles.paper}>
+                <Box className={styles.paper}>
                     <Typography component="h1" variant="h5">
                         Welcome {name}
                     </Typography>
-                    <div className={styles.buttons}>
-                        <Button variant="outlined" color={"inherit"} disabled={gameReady}
-                                onClick={() => gameIsReady()}>
-                            Find opponent
-                        </Button>
-                        <Button variant="outlined" color={"inherint"} disabled={gameReady} onClick={() => cancel()}>
-                            Cancel
-                        </Button>
-                    </div>
-                </div>
+                    <Grid container className={styles.buttons}>
+                        <Grid item >
+                            <Button variant="outlined" color={"inherit"} disabled={gameReady}
+                                    onClick={() => gameIsReady()}>
+                                Find opponent
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button variant="outlined" color={"inherit"} disabled={!gameReady} onClick={() => cancel()}>
+                                Cancel
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    {gameReady && <CircularProgress color={"inherit"}/>}
+                </Box>
             </Container>
         </div>
     )
