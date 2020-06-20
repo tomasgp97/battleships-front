@@ -24,6 +24,7 @@ class Cell extends Position implements ICell {
         this.currentShipId = value;
     }
 
+
     isFilled(): boolean {
         return this.shipId !== -1;
     }
@@ -54,6 +55,18 @@ class Cell extends Position implements ICell {
         return result;
     };
 
+    static regenerate = (object: any) => {
+        const result = new Map();
+        for (let k of Object.keys(object)) {
+            let cellObj = object[k] as Cell
+            let cell = new Cell(cellObj.x, cellObj.y)
+            cell.currentShipId = cellObj.currentShipId
+            cell.currentState = cellObj.currentState
+            result.set(k, cell);
+        }
+        return result;
+    };
+
     static resetCells = (cells: Map<string, ICell>) => {
         cells.forEach((cell: ICell) => {
             cell.shipId = -1;
@@ -67,11 +80,9 @@ class Cell extends Position implements ICell {
         let incorrect = 0
         for (let i = 0; i < cells1.length; ++i) {
             if (cells1[i].isDamaged) {
-                console.log("DAMAGED")
                 correct = correct + 1
             }
             if (cells1[i].isOpen) {
-                console.log("INCORRECT")
                 incorrect = incorrect + 1
             }
         }

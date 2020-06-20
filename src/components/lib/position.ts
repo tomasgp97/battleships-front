@@ -13,6 +13,11 @@ class Position implements IPosition {
     return { x: this.x, y: this.y };
   }
 
+  set position(val) {
+    this.x = val.x
+    this.y = val.y
+  }
+
   get key() {
     return `${this.x}:${this.y}`;
   }
