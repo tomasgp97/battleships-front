@@ -2,9 +2,10 @@ import socketIOClient from "socket.io-client";
 import React, {Component} from "react";
 import Ship from "./lib/ship";
 import Cell from "./lib/cell";
-import {Button} from "react-bootstrap";
 import Header from "./components/common/Header";
 import Battlefield from "./components/common/Battlefield";
+import NavBar from "./NavBar";
+import Button from "@material-ui/core/Button";
 
 
 export default class Game extends Component {
@@ -81,21 +82,22 @@ export default class Game extends Component {
 
     render() {
         return (
-            <div className="page v-container">
-                <Header as="h3" content="Whist all up!"/>
-                <div className="h-container">
-                    <div className="h-container__col">
-                        <Battlefield cells={this.state.myCells}/>
+            <div>
+                <NavBar/>
+                    <div className="h-container" style={{marginTop: "110px"}}>
+                        <div className="h-container__col">
+                            <Battlefield cells={this.state.myCells}/>
+                        </div>
+                        <div className="h-container__col">
+                            <Battlefield
+                                cells={this.state.opponent_cells}
+                                onCellClick={this.handleOnClick}
+                            />
+                        </div>
                     </div>
-                    <div className="h-container__col">
-                        <Battlefield
-                            cells={this.state.opponent_cells}
-                            onCellClick={this.handleOnClick}
-                        />
-                    </div>
-                </div>
-                <Button disabled={!this.state.myTurn} onClick={this.passTurn.bind(this)}>Pass Turn</Button>
+                    <Button variant="outlined" color={"inherit"} disabled={!this.state.myTurn} onClick={this.passTurn.bind(this)}>Pass Turn</Button>
             </div>
+
         )
     }
 }

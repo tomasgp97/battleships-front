@@ -148,33 +148,32 @@ export default class Setup extends Component {
 
         return (
             <div>
-                <CssBaseline/>
                 <NavBar/>
                 <div>
-                    <Grid container direction="row" justify="space-around">
+                    <Grid container direction="row" justify="space-around" alignItems="center">
                         <Grid item>
-                            <Typography component="h1" variant="h5">
+                            <Typography component="h5" variant="h5">
                                 This is the room: {this.state.room}
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Typography component="h3" variant="h5">
+                            <Typography component="h5" variant="h5">
                                 This is your opponent
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Typography component="h3" variant="h5">
+                            <Typography component="h5" variant="h5">
                                 NAME: {this.state.opponent.name}
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Typography component="h3" variant="h5">
+                            <Typography component="h5" variant="h5">
                                 PLAYER ID: {this.state.opponent.id}
                             </Typography>
                         </Grid>
                     </Grid>
                 </div>
-                <Container className={"Setup"} style={{margin: "50px"}}>
+                <Container className={"Setup"} style={{margin: "20px"}}>
                     <div className="h-container">
                         <div className="h-container__col">
                             <Battlefield cells={cells}/>
@@ -218,7 +217,7 @@ export default class Setup extends Component {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <Typography component="h3" variant="h5" style={{margin:"10px"}}>
+                        <Typography component="h3" variant="h5" style={{margin: "10px"}}>
                             Opponent ready: {this.state.opponentReady ? "Yes" : "No"}
                         </Typography>
                     </Grid>

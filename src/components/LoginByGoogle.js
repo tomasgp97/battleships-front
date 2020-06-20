@@ -55,7 +55,7 @@ export default function LoginByGoogle() {
                 <div className={styles.paper}>
                     <Avatar className={styles.avatar}>
                     </Avatar>
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h1" variant="h5" style={{margin: "10px"}}>
                         Sign in
                     </Typography>
                     <GoogleLogin
