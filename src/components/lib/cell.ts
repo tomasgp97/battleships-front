@@ -61,6 +61,26 @@ class Cell extends Position implements ICell {
         });
     };
 
+    static calcPerformance = (cells: Map<string, ICell>) => {
+        const cells1 = Array.from(cells.values())
+        let correct = 0
+        let incorrect = 0
+        for (let i = 0; i < cells1.length; ++i) {
+            if (cells1[i].isDamaged) {
+                console.log("DAMAGED")
+                correct = correct + 1
+            }
+            if (cells1[i].isOpen) {
+                console.log("INCORRECT")
+                incorrect = incorrect + 1
+            }
+        }
+        if (correct === 0 && incorrect === 0) {
+            return 0
+        }
+        return correct / (correct + incorrect)
+    }
+
     static updateCells = (cells: Map<string, ICell>, ships: IShip[]) => {
         for (let i = 0; i < ships.length; ++i) {
             for (const position of ships[i].positions()) {

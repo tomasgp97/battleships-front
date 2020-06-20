@@ -6,6 +6,7 @@ import Header from "./components/common/Header";
 import Battlefield from "./components/common/Battlefield";
 import NavBar from "./NavBar";
 import Button from "@material-ui/core/Button";
+import DashBoard from "./DashBoard";
 
 
 export default class Game extends Component {
@@ -95,6 +96,7 @@ export default class Game extends Component {
                             />
                         </div>
                     </div>
+                <DashBoard cells={this.state.myCells} opponent = {this.state.opponent_cells}/>
                     <Button variant="outlined" color={"inherit"} disabled={!this.state.myTurn} onClick={this.passTurn.bind(this)}>Pass Turn</Button>
             </div>
 
