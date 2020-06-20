@@ -5,6 +5,8 @@ import socketIOClient from "socket.io-client";
 import {useHistory} from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 const ENDPOINT = "http://127.0.0.1:5000";
 const socket = socketIOClient(ENDPOINT);
@@ -45,20 +47,47 @@ export default function Lobby() {
         })
     }
 
+    const useStyles = makeStyles((theme) => ({
+        paper: {
+            marginTop: theme.spacing(20),
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: "space-around",
+        },
+        avatar: {
+            margin: theme.spacing(3),
+        },
+        buttons: {
+            '& > *': {
+                margin: theme.spacing(3),
+            },
+            margin: theme.spacing(3),
+        }
+    }));
+
+    const styles = useStyles()
+
 
     return (
         <div>
             <NavBar/>
             <Container component="main" maxWidth="xs">
-                <Typography>
-                    <div> Welcome {name} </div>
-                </Typography>
-                <Button variant="primary" disabled={gameReady} onClick={() => gameIsReady()}>
-                    Find opponent
-                </Button>
-                <Button variant="secondary" disabled={gameReady} onClick={() => cancel()}>
-                    Cancel
-                </Button>
+                <CssBaseline/>
+                <div className={styles.paper}>
+                    <Typography component="h1" variant="h5">
+                        Welcome {name}
+                    </Typography>
+                    <div className={styles.buttons}>
+                        <Button variant="outlined" color={"inherit"} disabled={gameReady}
+                                onClick={() => gameIsReady()}>
+                            Find opponent
+                        </Button>
+                        <Button variant="outlined" color={"inherint"} disabled={gameReady} onClick={() => cancel()}>
+                            Cancel
+                        </Button>
+                    </div>
+                </div>
             </Container>
         </div>
     )
